@@ -1,0 +1,19 @@
+<div class="container mx-auto p-4">
+  <h1 class="text-2xl font-bold mb-4">Community Graph for @{@username}</h1>
+
+  <form phx-submit="fetch">
+    <input type="text" name="username" value={@username} class="border p-1" />
+    <button type="submit" class="ml-2 px-3 py-1 bg-blue-500 text-white rounded">Refresh</button>
+  </form>
+
+  <%= if @loading do %>
+    <p class="mt-4">Loading…</p>
+  <% end %>
+
+  <%= if @graph do %>
+    <div id="graph" phx-update="ignore" class="mt-4"></div>
+    <script type="text/javascript">
+      window.graphData = <%= Jason.encode!(@graph) %>;
+    </script>
+  <% end %>
+</div>

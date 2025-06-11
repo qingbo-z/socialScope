@@ -1,0 +1,19 @@
+{
+  "name": "socialscope-pipeline",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "dagger call dev-server up --ports=4000:4000",
+    "test": "dagger call test",
+    "format": "dagger call format-check",
+    "credo": "dagger call credo",
+    "lint": "dagger call lint",
+    "compile": "dagger call compile",
+    "release": "dagger call release",
+    "build": "dagger call build-image",
+    "publish": "dagger call publish",
+    "ci": "dagger call ci",
+    "shell": "dagger call shell",
+    "health": "dagger call health-check"
+  }
+}
