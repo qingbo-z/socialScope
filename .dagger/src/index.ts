@@ -31,7 +31,7 @@ export class SocialScope {
    */
   @func()
   baseContainer(
-    @argument({ defaultPath: "/socialScope" }) source: Directory
+    @argument({ defaultPath: "/" }) source: Directory
   ): Container {
     return dag
       .container()
@@ -49,7 +49,7 @@ export class SocialScope {
    */
   @func()
   withElixirDeps(
-    @argument({ defaultPath: "/socialScope" }) source: Directory
+    @argument({ defaultPath: "/" }) source: Directory
   ): Container {
     const hexCache = dag.cacheVolume("hex-cache")
     const rebarCache = dag.cacheVolume("rebar-cache")
@@ -69,7 +69,7 @@ export class SocialScope {
    */
   @func()
   withAssets(
-    @argument({ defaultPath: "/socialScope" }) source: Directory
+    @argument({ defaultPath: "/" }) source: Directory
   ): Container {
     const nodeCache = dag.cacheVolume("node-cache")
     const buildCache = dag.cacheVolume("build-cache")
@@ -89,7 +89,7 @@ export class SocialScope {
    */
   @func()
   async formatCheck(
-    @argument({ defaultPath: "/socialScope" }) source: Directory
+    @argument({ defaultPath: "/" }) source: Directory
   ): Promise<string> {
     return this.withElixirDeps(source)
       .withExec(["mix", "format", "--check-formatted"])
@@ -101,7 +101,7 @@ export class SocialScope {
    */
   @func()
   async credo(
-    @argument({ defaultPath: "/socialScope" }) source: Directory
+    @argument({ defaultPath: "/" }) source: Directory
   ): Promise<string> {
     return this.withElixirDeps(source)
       .withExec(["mix", "credo"])
@@ -113,7 +113,7 @@ export class SocialScope {
    */
   @func()
   async lint(
-    @argument({ defaultPath: "/socialScope" }) source: Directory
+    @argument({ defaultPath: "/" }) source: Directory
   ): Promise<string> {
     const container = this.withElixirDeps(source)
 
@@ -133,7 +133,7 @@ export class SocialScope {
    */
   @func()
   async test(
-    @argument({ defaultPath: "/socialScope" }) source: Directory
+    @argument({ defaultPath: "/" }) source: Directory
   ): Promise<string> {
     return this.withElixirDeps(source)
       .withEnvVariable("MIX_ENV", "test")
@@ -146,7 +146,7 @@ export class SocialScope {
    */
   @func()
   compile(
-    @argument({ defaultPath: "/socialScope" }) source: Directory,
+    @argument({ defaultPath: "/" }) source: Directory,
     @argument({ defaultValue: "dev" }) mixEnv: string = "dev"
   ): Container {
     const buildCache = dag.cacheVolume("build-cache")
@@ -162,7 +162,7 @@ export class SocialScope {
    */
   @func()
   release(
-    @argument({ defaultPath: "/socialScope" }) source: Directory
+    @argument({ defaultPath: "/" }) source: Directory
   ): Container {
     return this.withAssets(source)
       .withEnvVariable("MIX_ENV", "prod")
@@ -174,7 +174,7 @@ export class SocialScope {
    */
   @func()
   devServer(
-    @argument({ defaultPath: "/socialScope" }) source: Directory
+    @argument({ defaultPath: "/" }) source: Directory
   ): Container {
     return this.withAssets(source)
       .withEnvVariable("MIX_ENV", "dev")
@@ -187,7 +187,7 @@ export class SocialScope {
    */
   @func()
   buildImage(
-    @argument({ defaultPath: "/socialScope" }) source: Directory
+    @argument({ defaultPath: "/" }) source: Directory
   ): Container {
     // Multi-stage build for optimized production image
     const releaseContainer = this.release(source)
@@ -210,7 +210,7 @@ export class SocialScope {
    */
   @func()
   async publish(
-    @argument({ defaultPath: "/socialScope" }) source: Directory,
+    @argument({ defaultPath: "/" }) source: Directory,
     @argument({ defaultValue: "" }) registry: string = ""
   ): Promise<string> {
     const image = this.buildImage(source)
@@ -226,7 +226,7 @@ export class SocialScope {
    */
   @func()
   async ci(
-    @argument({ defaultPath: "/socialScope" }) source: Directory
+    @argument({ defaultPath: "/" }) source: Directory
   ): Promise<string> {
     console.log("🤖 Running CI pipeline...")
 
@@ -253,7 +253,7 @@ export class SocialScope {
    */
   @func()
   devEnv(
-    @argument({ defaultPath: "/socialScope" }) source: Directory
+    @argument({ defaultPath: "/" }) source: Directory
   ): Container {
     return this.withElixirDeps(source)
       .withEnvVariable("MIX_ENV", "dev")
@@ -264,7 +264,7 @@ export class SocialScope {
    */
   @func()
   shell(
-    @argument({ defaultPath: "/socialScope" }) source: Directory
+    @argument({ defaultPath: "/" }) source: Directory
   ): Container {
     return this.devEnv(source)
       .terminal()
@@ -275,7 +275,7 @@ export class SocialScope {
    */
   @func()
   async healthCheck(
-    @argument({ defaultPath: "/socialScope" }) source: Directory
+    @argument({ defaultPath: "/" }) source: Directory
   ): Promise<string> {
     return this.withAssets(source)
       .withEnvVariable("MIX_ENV", "prod")
